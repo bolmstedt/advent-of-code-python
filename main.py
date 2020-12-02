@@ -113,7 +113,6 @@ def _generate(solution: str) -> None:
             '_DAY_', short_day,
         )
 
-
     try:
         os.mkdir(folder)
 
