@@ -23,5 +23,15 @@ TESTS = {
                 'expected': [982464, 162292410],
             },
         ],
+        '02': [
+            {
+                'data': 'example',
+                'expected': [2, 1],
+            },
+            {
+                'data': 'input',
+                'expected': [396, 428],
+            },
+        ],
     },
 }
