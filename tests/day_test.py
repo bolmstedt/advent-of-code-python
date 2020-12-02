@@ -8,10 +8,11 @@ from app.base_solver import BaseSolver
 from tests import register
 
 SOLVERS = utils.load_solvers()
+INPUT_PATH = 'input/{solver.year}/{solver.day}/{data}.txt'
 
 
-@pytest.mark.parametrize('year,day,data,expected', [
-    [year, day, test['data'], test['expected']]
+@pytest.mark.parametrize('year,day,data,one,two', [
+    [year, day, test['data'], test.get('one'), test.get('two')]
     for year, days in register.TESTS.items()
     for day, tests in days.items()
     for test in tests
@@ -19,8 +20,9 @@ SOLVERS = utils.load_solvers()
 def test_days(
     year: str,
     day: str,
-    data: str,
-    expected: List[Union[int, str, None]],
+    data: Union[str, List[str]],
+    one: Union[int, str, None],
+    two: Union[int, str, None],
 ) -> None:
     """Tests solvers."""
     try:
@@ -30,16 +32,20 @@ def test_days(
 
         return
 
-    if expected[0] is None and expected[1] is None:
+    if one is None and two is None:
         pytest.skip('No expected results')
 
         return
 
-    with open(f'input/{solver.year}/{solver.day}/{data}.txt', 'r') as handle:
-        data = handle.read().strip()
+    if isinstance(data, str):
+        with open(
+            f'input/{solver.year}/{solver.day}/{data}.txt', 'r',
+        ) as handle:
+            data = [handle.read().strip()]
 
-    if expected[0] is not None:
-        assert solver.part_one(data) == expected[0]
+    for input_data in data:
+        if one is not None:
+            assert solver.part_one(input_data) == one
 
-    if expected[1] is not None:
-        assert solver.part_two(data) == expected[1]
+        if two is not None:
+            assert solver.part_two(input_data) == two

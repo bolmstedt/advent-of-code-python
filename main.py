@@ -55,6 +55,12 @@ def _solve(only: str = None) -> None:
             part_two = solver.part_two(data)
             part_two_time = round((time.perf_counter() - start) * 1000, 2)
 
+            if not part_one:
+                part_one = '-'
+
+            if not part_two:
+                part_two = '-'
+
             _cprint(f'\tPart One: {part_one} ({part_one_time}ms)', OKGREEN)
             _cprint(f'\tPart Two: {part_two} ({part_two_time}ms)', OKGREEN)
 
