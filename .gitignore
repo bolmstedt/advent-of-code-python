@@ -1,0 +1,8 @@
+.coverage
+.env
+.mypy_cache/
+*.egg-info/
+pip-wheel-metadata/
+__pycache__/
+.venv/
+htmlcov/

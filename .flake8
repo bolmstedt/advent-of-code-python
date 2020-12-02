@@ -1,0 +1,34 @@
+[flake8]
+ignore =
+    # (Default: E121,E123,E126,E226,E24,E704,W503,W504)
+    # Pylama: D203,D415,R0903,D107,D105,D213,W0511
+    # D212 vs D213, how to begin multiline docstring
+    # Ignore missing docstring in __init__
+    D107,
+    # Ignore linebreaks after binary operators
+    W504,
+    # Ignore summary messages
+    T499,
+    # Ignore Bandit regarding assert
+    S101,
+    # Ignore Bandit regarding pickle
+    S301,
+    # Ignore Bandit regarding pickle
+    S403,
+
+enable_extensions=G
+
+exclude =
+    .git,
+    .idea,
+    .venv,
+    .mypy_cache,
+    .pytest_cache,
+    __pycache__,
+    *.egg-info,
+    pip-wheel-metadata,
+
+max-doc-length = 79
+doctests = True
+
+mypy_config = mypy.ini

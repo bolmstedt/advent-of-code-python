@@ -1,0 +1,27 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+max_line_length = 80
+trim_trailing_whitespace = true
+
+[*.proto]
+indent_size = 2
+
+[*.json]
+indent_size = 2
+
+[*.py]
+default_section = THIRDPARTY
+include_trailing_comma = true
+max_line_length = 79
+multi_line_output = 3
+include_trailing_comma = true
+known_first_party = app,tests
+
+[*.{yml,yaml}]
+indent_size = 2
