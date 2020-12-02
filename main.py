@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 """Advent of Code solutions."""
+import os
+import re
 import sys
 import time
 from enum import Enum
 from pathlib import Path
+from typing import List
+
+from pip._vendor import requests
 
 from app import utils
 
@@ -16,16 +21,25 @@ ENDC = '\033[0m'
 BOLD = '\033[1m'
 UNDERLINE = '\033[4m'
 
+AOC_WEB = 'https://adventofcode.com/{year}/day/{day}'
+
 
 class Action(Enum):
     """Enumerations for actions."""
 
     SOLVE = 'solve'
+    GENERATE = 'generate'
 
 
-def _main(action: Action) -> None:
+def _main(action: Action, args: List[str] = None) -> None:
+    if not args:
+        args = []
+
     if action == Action.SOLVE:
-        _solve()
+        _solve(*args)
+
+    if action == Action.GENERATE:
+        _generate(*args)
 
 
 def _solve(only: str = None) -> None:
@@ -56,13 +70,55 @@ def _solve(only: str = None) -> None:
             part_two_time = round((time.perf_counter() - start) * 1000, 2)
 
             if not part_one:
-                part_one = '-'
+                part_one = 'Not done'
 
             if not part_two:
-                part_two = '-'
+                part_two = 'Not done'
 
             _cprint(f'\tPart One: {part_one} ({part_one_time}ms)', OKGREEN)
             _cprint(f'\tPart Two: {part_two} ({part_two_time}ms)', OKGREEN)
+
+
+def _generate(solution: str) -> None:
+    if not re.match(r'\d{4}:\d{2}', solution):
+        _cprint(f'{solution} is not a valid format, use YYYY:DD', FAIL)
+        sys.exit(1)
+
+    year, day = solution.split(':')
+    day = day
+
+    response = requests.get(AOC_WEB.format(
+        year=year,
+        day=day.removeprefix('0'),  # type: ignore[attr-defined]
+    ))
+    match = re.search(r'<h2>--- Day \d{1,2}:(.*)---</h2>', response.text)
+
+    if not match:
+        _cprint('Error downloading solution name!', FAIL)
+        sys.exit(1)
+
+    name = match.group(1).strip().lower().replace(' ', '_')
+
+    with open('resources/template.py', 'r') as handle:
+        template = handle.read().replace('_YEAR_', year).replace('_DAY_', day)
+
+    folder = f'app/y{year}'
+
+    try:
+        os.mkdir(folder)
+
+        with open(f'{folder}/__init__.py', 'w') as handle:
+            handle.write(f'"""Solvers for {year}."""\n')
+    except FileExistsError:
+        pass
+
+    os.makedirs(f'input/{year}/{day}', exist_ok=True)
+    solution_file = f'{folder}/d{day}_{name}.py'
+
+    with open(solution_file, 'w') as handle:
+        handle.write(template)
+
+    _cprint(f'Created {solution_file}!', OKGREEN)
 
 
 def _cprint(text: str, color: str = None) -> None:
@@ -89,9 +145,9 @@ if __name__ == '__main__':
     _current_arg = _args.pop(0)
 
     try:
-        _action = Action[_current_arg]
+        _action = Action[_current_arg.upper()]
     except KeyError:
         _cprint(f'"{_current_arg}" is not a valid action.', FAIL)
         sys.exit(1)
 
-    _main(_action)
+    _main(_action, _args)
