@@ -7,11 +7,7 @@ from app import utils
 from app.base_solver import BaseSolver
 from tests import register
 
-SOLVERS = {
-    solver.year: {
-        solver.day: solver,
-    } for solver in utils.load_solvers()
-}
+SOLVERS = utils.load_solvers()
 
 
 @pytest.mark.parametrize('year,day,data,expected', [
@@ -30,7 +26,14 @@ def test_days(
     try:
         solver: BaseSolver = SOLVERS[year][day]
     except KeyError:
-        raise NotImplementedError(f'There is no solver for {year}:{day}!')
+        pytest.skip(f'There is no solver for {year}:{day}')
+
+        return
+
+    if expected[0] is None and expected[1] is None:
+        pytest.skip('No expected results')
+
+        return
 
     with open(f'input/{solver.year}/{solver.day}/{data}.txt', 'r') as handle:
         data = handle.read().strip()

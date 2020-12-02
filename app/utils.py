@@ -1,25 +1,32 @@
 """Various helper utils."""
 import glob
 import importlib
-from typing import Iterable
+from typing import Dict
 
 from app.base_solver import BaseSolver
 
-APP_PATH = 'app'
 
-
-def load_solvers() -> Iterable[BaseSolver]:
+def load_solvers() -> Dict[str, Dict[str, BaseSolver]]:
     """Load all day solvers."""
-    for year_path in glob.glob(f'{APP_PATH}/y*'):
-        year = year_path.removeprefix(f'{APP_PATH}/')
+    solvers: Dict[str, Dict[str, BaseSolver]] = {}
 
-        for day_module in glob.glob(f'{APP_PATH}/{year}/d*'):
-            day_module_name = day_module.removeprefix(
-                f'{APP_PATH}/{year}/',
+    for year_path in sorted(glob.glob('app/y*')):
+        year = year_path.removeprefix('app/')  # type: ignore[attr-defined]
+
+        for day_path in sorted(glob.glob(f'{year_path}/d*')):
+            day_module = day_path.removeprefix(  # type: ignore[attr-defined]
+                f'{year_path}/',
             ).removesuffix('.py')
-            solver = importlib.import_module(
-                f'{APP_PATH}.{year}.{day_module_name}',
+            module = importlib.import_module(
+                f'app.{year}.{day_module}',
             )
 
-            if hasattr(solver, 'Solver'):
-                yield solver.Solver()  # type: ignore[attr-defined]
+            if hasattr(module, 'Solver'):
+                solver = module.Solver()  # type: ignore[attr-defined]
+
+                if solver.year not in solvers:
+                    solvers[solver.year] = {}
+
+                solvers[solver.year][solver.day] = solver
+
+    return solvers
