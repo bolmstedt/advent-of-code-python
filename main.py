@@ -86,10 +86,11 @@ def _generate(solution: str) -> None:
 
     year, day = solution.split(':')
     day = day
+    short_day = day.removeprefix('0')  # type: ignore[attr-defined]
 
     response = requests.get(AOC_WEB.format(
         year=year,
-        day=day.removeprefix('0'),  # type: ignore[attr-defined]
+        day=short_day,
     ))
     match = re.search(r'<h2>--- Day \d{1,2}:(.*)---</h2>', response.text)
 
@@ -100,7 +101,11 @@ def _generate(solution: str) -> None:
     name = match.group(1).strip().lower().replace(' ', '_')
 
     with open('resources/template.py', 'r') as handle:
-        template = handle.read().replace('_YEAR_', year).replace('_DAY_', day)
+        template = handle.read().replace(
+            '_YEAR_', year,
+        ).replace(
+            '_DAY_', short_day,
+        )
 
     folder = f'app/y{year}'
 

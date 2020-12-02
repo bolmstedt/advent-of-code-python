@@ -1,4 +1,4 @@
-"""Solution for day 02, 2015."""
+"""Solution for day 2, 2015."""
 import itertools
 import math
 from typing import Union
@@ -7,7 +7,7 @@ from app.base_solver import BaseSolver
 
 
 class Solver(BaseSolver):
-    """Solver for day 02, 2015."""
+    """Solver for day 2, 2015."""
 
     def part_one(self, data: str) -> Union[int, str]:
         """Solve part one."""
