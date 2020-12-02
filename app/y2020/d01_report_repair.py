@@ -5,6 +5,8 @@ from app.base_solver import BaseSolver
 class Solver(BaseSolver):
     """Solver for day 1, 2020."""
 
+    _limit = 2020
+
     def part_one(self, data: str) -> int:
         """Solve part one."""
         rows = self._parse_int_lines(data)
@@ -12,8 +14,11 @@ class Solver(BaseSolver):
         while len(rows) > 0:
             first = rows.pop()
 
+            if first > self._limit:
+                continue
+
             for second in rows:
-                if first + second == 2020:
+                if first + second == self._limit:
                     return first * second
 
         return 0
@@ -24,13 +29,16 @@ class Solver(BaseSolver):
 
         while len(rows) > 0:
             first = rows.pop()
-            subset = rows.copy()
 
-            while len(subset) > 0:
-                second = subset.pop()
+            if first > self._limit:
+                continue
 
-                for third in rows:
-                    if first + second + third == 2020:
+            for index, second in enumerate(rows):
+                if first + second > self._limit:
+                    continue
+
+                for third in rows[index:]:
+                    if first + second + third == self._limit:
                         return first * second * third
 
         return 0
