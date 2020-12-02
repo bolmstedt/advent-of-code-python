@@ -48,11 +48,11 @@ class _Position:
         """Move in one direction."""
         if direction == '^':
             self.y += 1
-        if direction == 'v':
+        elif direction == 'v':
             self.y -= 1
-        if direction == '<':
+        elif direction == '<':
             self.x -= 1
-        if direction == '>':
+        elif direction == '>':
             self.x += 1
 
         return self.coords
