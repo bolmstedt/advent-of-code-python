@@ -87,6 +87,7 @@ def _generate(solution: str) -> None:
     year, day = solution.split(':')
     day = day
     short_day = day.removeprefix('0')  # type: ignore[attr-defined]
+    folder = f'app/y{year}'
 
     response = requests.get(AOC_WEB.format(
         year=year,
@@ -95,10 +96,15 @@ def _generate(solution: str) -> None:
     match = re.search(r'<h2>--- Day \d{1,2}:(.*)---</h2>', response.text)
 
     if not match:
-        _cprint('Error downloading solution name!', FAIL)
+        _cprint(f'Error downloading solution {solution}!', FAIL)
         sys.exit(1)
 
     name = match.group(1).strip().lower().replace(' ', '_')
+    solution_file = Path(f'{folder}/d{day}_{name}.py')
+
+    if solution_file.exists():
+        _cprint(f'There is already a solution for {solution}!', FAIL)
+        sys.exit(1)
 
     with open('resources/template.py', 'r') as handle:
         template = handle.read().replace(
@@ -107,7 +113,6 @@ def _generate(solution: str) -> None:
             '_DAY_', short_day,
         )
 
-    folder = f'app/y{year}'
 
     try:
         os.mkdir(folder)
@@ -118,7 +123,6 @@ def _generate(solution: str) -> None:
         pass
 
     os.makedirs(f'input/{year}/{day}', exist_ok=True)
-    solution_file = f'{folder}/d{day}_{name}.py'
 
     with open(solution_file, 'w') as handle:
         handle.write(template)
