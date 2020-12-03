@@ -9,6 +9,10 @@ from app.base_solver import BaseSolver
 class Solver(BaseSolver):
     """Solver for day 4, 2015."""
 
+    day = '04'
+    year = '2015'
+    name = r"""The Ideal Stocking Stuffer"""
+
     def part_one(self, data: str) -> Union[int, str]:
         """Solve part one."""
         return self._solve(data, 5)

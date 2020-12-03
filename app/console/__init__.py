@@ -1,4 +1,5 @@
 """Console commands."""
+import html
 import os
 import re
 import sys
@@ -110,7 +111,11 @@ def generate() -> None:
         _cprint(f'Error downloading solution {solution}!', FAIL)
         sys.exit(1)
 
-    name = match.group(1).strip().lower().replace(' ', '_')
+    raw_name = html.unescape(match.group(1).strip())
+    name = re.sub(
+        r'[^\w]', '',
+        raw_name.lower().replace(' ', '_').replace('-', '_'),
+    )
     solution_file = Path(f'{folder}/d{day}_{name}.py')
 
     if solution_file.exists():
@@ -122,6 +127,8 @@ def generate() -> None:
             '_YEAR_', year,
         ).replace(
             '_DAY_', short_day,
+        ).replace(
+            '_NAME_', raw_name,
         )
 
     try:

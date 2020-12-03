@@ -5,7 +5,11 @@ from app.base_solver import BaseSolver
 
 
 class Solver(BaseSolver):
-    """Solver for day 1, 2019."""
+    """Solver for day 1, 2015."""
+
+    day = '01'
+    year = '2015'
+    name = r"""Not Quite Lisp"""
 
     def part_one(self, data: str) -> Union[int, str]:
         """Solve part one."""

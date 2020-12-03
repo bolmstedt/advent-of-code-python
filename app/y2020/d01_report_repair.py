@@ -5,6 +5,10 @@ from app.base_solver import BaseSolver
 class Solver(BaseSolver):
     """Solver for day 1, 2020."""
 
+    day = '01'
+    year = '2020'
+    name = r"""Report Repair"""
+
     _limit = 2020
 
     def part_one(self, data: str) -> int:

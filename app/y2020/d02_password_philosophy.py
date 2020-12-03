@@ -10,6 +10,10 @@ PASSWORD = re.compile(r'\W+')
 class Solver(BaseSolver):
     """Solver for day 2, 2020."""
 
+    day = '02'
+    year = '2020'
+    name = r"""Password Philosophy"""
+
     def part_one(self, data: str) -> Union[int, str]:
         """Solve part one."""
         rows = data.splitlines()

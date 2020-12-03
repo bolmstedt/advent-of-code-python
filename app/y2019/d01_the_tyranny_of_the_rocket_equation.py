@@ -8,6 +8,10 @@ from app.base_solver import BaseSolver
 class Solver(BaseSolver):
     """Solver for day 1, 2019."""
 
+    day = '01'
+    year = '2019'
+    name = r"""The Tyranny of the Rocket Equation"""
+
     def part_one(self, data: str) -> Union[int, str]:
         """Solve part one."""
         modules = self._parse_int_lines(data)

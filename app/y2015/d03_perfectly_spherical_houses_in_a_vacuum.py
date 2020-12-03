@@ -7,6 +7,10 @@ from app.base_solver import BaseSolver
 class Solver(BaseSolver):
     """Solver for day 3, 2015."""
 
+    day = '03'
+    year = '2015'
+    name = r"""Perfectly Spherical Houses in a Vacuum"""
+
     def part_one(self, data: str) -> Union[int, str]:
         """Solve part one."""
         santa = _Position()
