@@ -10,7 +10,14 @@ def pytest_addoption(parser: Parser) -> None:
         '--full',
         action='store_true',
         default=False,
-        help='run solution tests',
+        help='run full solution tests',
+    )
+
+    parser.addoption(
+        '--solution',
+        action='store',
+        default='all',
+        help='run specific solution tests',
     )
 
 
@@ -18,3 +25,9 @@ def pytest_addoption(parser: Parser) -> None:
 def full(request: SubRequest) -> bool:
     """Fixture for full option."""
     return bool(request.config.getoption('--full'))
+
+
+@pytest.fixture
+def solution(request: SubRequest) -> str:
+    """Fixture for solution option."""
+    return str(request.config.getoption('--solution'))

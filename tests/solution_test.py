@@ -24,8 +24,14 @@ def test_days(
     one: Union[int, str, None],
     two: Union[int, str, None],
     full: bool,
+    solution: str,
 ) -> None:
     """Tests solvers."""
+    if solution != 'all' and solution != f'{year}:{day}':
+        pytest.skip(f'Skipping solver for {year}:{day}')
+
+        return
+
     try:
         solver: BaseSolver = SOLVERS[year][day]
     except KeyError:
