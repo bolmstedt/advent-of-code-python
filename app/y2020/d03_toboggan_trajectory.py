@@ -16,18 +16,13 @@ class Solver(BaseSolver):
 
     def part_one(self, data: str) -> Union[int, str]:
         """Solve part one."""
-        rows = data.splitlines()
-
-        return self._get_hit_trees(rows, 3, 1)
+        return self._get_hit_trees(data.splitlines(), 3, 1)
 
     def part_two(self, data: str) -> Union[int, str]:
         """Solve part two."""
-        rows = data.splitlines()
-        speeds = [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)]
-
         return math.prod([
-            self._get_hit_trees(rows, speed_x, speed_y)
-            for speed_x, speed_y in speeds
+            self._get_hit_trees(data.splitlines(), speed_x, speed_y)
+            for speed_x, speed_y in [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)]
         ])
 
     @staticmethod
