@@ -23,13 +23,7 @@ class Solver(BaseSolver):
     def part_two(self, data: str) -> Union[int, str]:
         """Solve part two."""
         rows = data.splitlines()
-        speeds = [
-            (1, 1),
-            (3, 1),
-            (5, 1),
-            (7, 1),
-            (1, 2),
-        ]
+        speeds = [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)]
 
         return math.prod([
             self._get_hit_trees(rows, speed_x, speed_y)
