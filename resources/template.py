@@ -1,11 +1,11 @@
-"""Solution for day _DAY_, _YEAR_."""
+"""Solution for day _SHORT_DAY_, _YEAR_."""
 from typing import Union
 
 from app.base_solver import BaseSolver
 
 
 class Solver(BaseSolver):
-    """Solver for day _DAY_, _YEAR_."""
+    """Solver for day _SHORT_DAY_, _YEAR_."""
 
     day = '_DAY_'
     year = '_YEAR_'

@@ -97,7 +97,6 @@ def generate() -> None:
         sys.exit(1)
 
     year, day = solution.split(':')
-    day = day
     short_day = day.removeprefix('0')
     folder = f'app/y{year}'
 
@@ -126,7 +125,9 @@ def generate() -> None:
         template = handle.read().replace(
             '_YEAR_', year,
         ).replace(
-            '_DAY_', short_day,
+            '_SHORT_DAY_', short_day,
+        ).replace(
+            '_DAY_', day,
         ).replace(
             '_NAME_', raw_name,
         )
