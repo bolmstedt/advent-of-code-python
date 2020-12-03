@@ -1,14 +1,11 @@
-#!/usr/bin/env python3
-"""Advent of Code solutions."""
+"""Console commands."""
 import os
 import re
 import sys
 import time
-from enum import Enum
 from pathlib import Path
-from typing import List
 
-from pip._vendor import requests
+import requests
 
 from app import utils
 
@@ -24,30 +21,35 @@ UNDERLINE = '\033[4m'
 AOC_WEB = 'https://adventofcode.com/{year}/day/{day}'
 
 
-class Action(Enum):
-    """Enumerations for actions."""
+def solutions() -> None:
+    """Display all solutions."""
+    solvers = utils.load_solvers()
 
-    SOLVE = 'solve'
-    GENERATE = 'generate'
-
-
-def _main(action: Action, args: List[str] = None) -> None:
-    if not args:
-        args = []
-
-    if action == Action.SOLVE:
-        _solve(*args)
-
-    if action == Action.GENERATE:
-        _generate(*args)
+    for days in solvers.values():
+        for solver in days.values():
+            _cprint(solver.full_name, HEADER)
 
 
-def _solve(only: str = None) -> None:
+def solve() -> None:
+    """Solve solutions."""
+    args = sys.argv[1:]
+
+    if len(args) < 1:
+        _cprint('Specify "all" to run all dates, or', FAIL)
+        _cprint('Specify a solution year in the format "YYYY", or', FAIL)
+        _cprint('Specify a solution date in the format "YYYY:DD"', FAIL)
+        sys.exit(1)
+
+    solution = args[0]
+
     solvers = utils.load_solvers()
 
     for year, days in solvers.items():
         for day, solver in days.items():
-            if only and f'{year}:{day}' != only:
+            if (
+                solution and solution != 'all' and
+                f'{year}:{day}' != solution and year != solution
+            ):
                 continue
 
             _cprint(solver.full_name, HEADER)
@@ -79,14 +81,23 @@ def _solve(only: str = None) -> None:
             _cprint(f'\tPart Two: {part_two} ({part_two_time}ms)', OKGREEN)
 
 
-def _generate(solution: str) -> None:
+def generate() -> None:
+    """Generate a new solution file."""
+    args = sys.argv[1:]
+
+    if len(args) < 1:
+        _cprint('Specify a solution date in the format "YYYY:DD"', FAIL)
+        sys.exit(1)
+
+    solution = args[0]
+
     if not re.match(r'\d{4}:\d{2}', solution):
         _cprint(f'{solution} is not a valid format, use YYYY:DD', FAIL)
         sys.exit(1)
 
     year, day = solution.split(':')
     day = day
-    short_day = day.removeprefix('0')  # type: ignore[attr-defined]
+    short_day = day.removeprefix('0')
     folder = f'app/y{year}'
 
     response = requests.get(AOC_WEB.format(
@@ -134,28 +145,3 @@ def _cprint(text: str, color: str = None) -> None:
         color = ''
 
     print(f'{color}{text}{ENDC}')  # noqa: T001
-
-
-def _help() -> None:
-    _cprint('Advent of Code Solutions')
-    _cprint('Usage', BOLD)
-    _cprint('\tpython main.py')
-
-
-if __name__ == '__main__':
-    _action = Action.SOLVE
-    _args = sys.argv[1:]
-
-    if len(_args) == 0:
-        _main(_action)
-        sys.exit(0)
-
-    _current_arg = _args.pop(0)
-
-    try:
-        _action = Action[_current_arg.upper()]
-    except KeyError:
-        _cprint(f'"{_current_arg}" is not a valid action.', FAIL)
-        sys.exit(1)
-
-    _main(_action, _args)

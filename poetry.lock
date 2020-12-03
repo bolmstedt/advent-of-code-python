@@ -62,12 +62,17 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 version = "0.4.4"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Code coverage measurement for Python"
 name = "coverage"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4"
 version = "5.3"
+
+[package.dependencies]
+[package.dependencies.toml]
+optional = true
+version = "*"
 
 [package.extras]
 toml = ["toml"]
@@ -562,7 +567,7 @@ docs = ["sphinx", "zope.component", "sybil", "twisted", "mock", "django (<2)", "
 test = ["pytest (>=3.6)", "pytest-cov", "pytest-django", "zope.component", "sybil", "twisted", "mock", "django (<2)", "django"]
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Python Library for Tom's Obvious, Minimal Language"
 name = "toml"
 optional = false
@@ -599,7 +604,7 @@ secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "cer
 socks = ["PySocks (>=1.5.6,<1.5.7 || >1.5.7,<2.0)"]
 
 [metadata]
-content-hash = "18cda7a2ff8d8a5b1a4a3e1f8e7c90ed59d3d4fa4b4bed864c0e11663467bff0"
+content-hash = "76a9de208b9b91672f4203df0ded8e7f4621125326d24ed2bb849577479a08d1"
 lock-version = "1.0"
 python-versions = "^3.9"
 

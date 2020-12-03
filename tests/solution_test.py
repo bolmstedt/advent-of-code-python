@@ -23,6 +23,7 @@ def test_days(
     data: Union[str, List[str]],
     one: Union[int, str, None],
     two: Union[int, str, None],
+    full: bool,
 ) -> None:
     """Tests solvers."""
     try:
@@ -38,6 +39,11 @@ def test_days(
         return
 
     if isinstance(data, str):
+        if not full and data == 'input':
+            pytest.skip('Full solutions need --full option to run')
+
+            return
+
         with open(
             f'input/{solver.year}/{solver.day}/{data}.txt', 'r',
         ) as handle:

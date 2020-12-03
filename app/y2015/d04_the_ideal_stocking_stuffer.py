@@ -17,13 +17,18 @@ class Solver(BaseSolver):
         """Solve part two."""
         return self._solve(data, 6)
 
-    @staticmethod
-    def _solve(data: str, zeroes: int) -> int:
+    @classmethod
+    def _solve(cls, data: str, zeroes: int) -> int:
         target = ''.zfill(zeroes)
         index = 0
 
         while True:
-            if md5(f'{data}{index}'.encode()).hexdigest().startswith(target):
+
+            if cls._md5_stars_with(f'{data}{index}', target):
                 return index
 
             index += 1
+
+    @staticmethod
+    def _md5_stars_with(data: str, target: str) -> bool:
+        return bool(md5(data.encode()).hexdigest().startswith(target))

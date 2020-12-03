@@ -11,10 +11,10 @@ def load_solvers() -> Dict[str, Dict[str, BaseSolver]]:
     solvers: Dict[str, Dict[str, BaseSolver]] = {}
 
     for year_path in sorted(glob.glob('app/y*')):
-        year = year_path.removeprefix('app/')  # type: ignore[attr-defined]
+        year = year_path.removeprefix('app/')
 
         for day_path in sorted(glob.glob(f'{year_path}/d*')):
-            day_module = day_path.removeprefix(  # type: ignore[attr-defined]
+            day_module = day_path.removeprefix(
                 f'{year_path}/',
             ).removesuffix('.py')
             module = importlib.import_module(

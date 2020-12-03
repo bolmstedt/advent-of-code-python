@@ -15,13 +15,5 @@ indent_size = 2
 [*.json]
 indent_size = 2
 
-[*.py]
-default_section = THIRDPARTY
-include_trailing_comma = true
-max_line_length = 79
-multi_line_output = 3
-include_trailing_comma = true
-known_first_party = app,tests
-
 [*.{yml,yaml}]
 indent_size = 2
