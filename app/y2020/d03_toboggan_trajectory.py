@@ -30,6 +30,6 @@ class Solver(BaseSolver):
         map_width = len(rows[0])
 
         return sum(
-            row[speed_x * (y + 1) % map_width] == TREE
-            for y, row in enumerate(rows[0::speed_y][1:])
+            row[speed_x * y % map_width] == TREE
+            for y, row in enumerate(rows[0::speed_y][1:], start=1)
         )
