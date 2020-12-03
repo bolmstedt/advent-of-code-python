@@ -1,4 +1,19 @@
 """A register of test data for solvers."""
+from typing import Dict, List, TypedDict, Union
+
+INPUT = 'input'
+EXAMPLE = 'example'
+
+
+class TestCase(TypedDict, total=False):
+    """Typed dict for test cases."""
+
+    data: List[str]
+    one: Union[int, str, None]
+    two: Union[int, str, None]
+
+
+TESTS: Dict[str, Dict[str, List[TestCase]]]
 TESTS = {
     '2015': {
         '01': [
@@ -27,7 +42,7 @@ TESTS = {
                 'two': 5,
             },
             {
-                'data': 'input',
+                'data': [INPUT],
                 'one': 138,
                 'two': 1771,
             },
@@ -44,7 +59,7 @@ TESTS = {
                 'two': 14,
             },
             {
-                'data': 'input',
+                'data': [INPUT],
                 'one': 1586300,
                 'two': 3737498,
             },
@@ -69,7 +84,7 @@ TESTS = {
                 'two': 3,
             },
             {
-                'data': 'input',
+                'data': [INPUT],
                 'one': 2565,
                 'two': 2639,
             },
@@ -84,21 +99,48 @@ TESTS = {
                 'one': 1048970,
             },
             {
-                'data': 'input',
+                'data': [INPUT],
                 'one': 346386,
                 'two': 9958218,
+            },
+        ],
+        '05': [
+            {
+                'data': ['ugknbfddgicrmopn', 'aaa'],
+                'one': 1,
+            },
+            {
+                'data': [
+                    'jchzalrnumimnmhp',
+                    'haegwjzuvuyypxyu',
+                    'dvszwmarrgswjxmb',
+                ],
+                'one': 0,
+            },
+            {
+                'data': ['qjhvhtzxzqqjkmpb', 'xxyxx'],
+                'two': 1,
+            },
+            {
+                'data': ['uurcxstgmygtbstg', 'ieodomkazucvgmuy'],
+                'two': 0,
+            },
+            {
+                'data': [INPUT],
+                'one': 236,
+                'two': 51,
             },
         ],
     },
     '2019': {
         '01': [
             {
-                'data': 'example',
+                'data': [EXAMPLE],
                 'one': 34241,
                 'two': 51316,
             },
             {
-                'data': 'input',
+                'data': [INPUT],
                 'one': 3282935,
                 'two': 4921542,
             },
@@ -107,36 +149,36 @@ TESTS = {
     '2020': {
         '01': [
             {
-                'data': 'example',
+                'data': [EXAMPLE],
                 'one': 514579,
                 'two': 241861950,
             },
             {
-                'data': 'input',
+                'data': [INPUT],
                 'one': 982464,
                 'two': 162292410,
             },
         ],
         '02': [
             {
-                'data': 'example',
+                'data': [EXAMPLE],
                 'one': 2,
                 'two': 1,
             },
             {
-                'data': 'input',
+                'data': [INPUT],
                 'one': 396,
                 'two': 428,
             },
         ],
         '03': [
             {
-                'data': 'example',
+                'data': [EXAMPLE],
                 'one': 7,
                 'two': 336,
             },
             {
-                'data': 'input',
+                'data': [INPUT],
                 'one': 218,
                 'two': 3847183340,
             },

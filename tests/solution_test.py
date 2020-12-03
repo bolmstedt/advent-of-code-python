@@ -1,5 +1,5 @@
 """Automatic tests for Advent of Code solutions."""
-from typing import List, Union
+from typing import Union
 
 import pytest
 
@@ -12,15 +12,16 @@ INPUT_PATH = 'input/{solver.year}/{solver.day}/{data}.txt'
 
 
 @pytest.mark.parametrize('year,day,data,one,two', [
-    [year, day, test['data'], test.get('one'), test.get('two')]
+    [year, day, data, test.get('one'), test.get('two')]
     for year, days in register.TESTS.items()
     for day, tests in days.items()
     for test in tests
+    for data in test['data']
 ])
 def test_days(
     year: str,
     day: str,
-    data: Union[str, List[str]],
+    data: str,
     one: Union[int, str, None],
     two: Union[int, str, None],
     full: bool,
@@ -28,7 +29,12 @@ def test_days(
 ) -> None:
     """Tests solvers."""
     if solution != 'all' and solution != f'{year}:{day}':
-        pytest.skip(f'Skipping solver for {year}:{day}')
+        pytest.skip(f'Skipping solvers other than {solution}')
+
+        return
+
+    if not full and data == register.INPUT:
+        pytest.skip('Full solutions need --full option to run')
 
         return
 
@@ -44,20 +50,14 @@ def test_days(
 
         return
 
-    if isinstance(data, str):
-        if not full and data == 'input':
-            pytest.skip('Full solutions need --full option to run')
-
-            return
-
+    if data in [register.EXAMPLE, register.INPUT]:
         with open(
             f'input/{solver.year}/{solver.day}/{data}.txt', 'r',
         ) as handle:
-            data = [handle.read().strip()]
+            data = handle.read().strip()
 
-    for input_data in data:
-        if one is not None:
-            assert solver.part_one(input_data) == one
+    if one is not None:
+        assert solver.part_one(data) == one
 
-        if two is not None:
-            assert solver.part_two(input_data) == two
+    if two is not None:
+        assert solver.part_two(data) == two
