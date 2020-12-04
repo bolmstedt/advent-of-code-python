@@ -28,7 +28,7 @@ REQUIRED = {
     'ecl': lambda v: v in EYE_COLORS,
     'hcl': lambda v: HEX_VALUE.search(v) is not None,
     'pid': lambda v: NINE_DIGITS.search(v) is not None,
-    'hgt': lambda v: _validate_height,
+    'hgt': _validate_height,
 }
 
 
