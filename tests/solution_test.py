@@ -18,7 +18,7 @@ INPUT_PATH = 'input/{solver.year}/{solver.day}/{data}.txt'
     for test in tests
     for data in test['data']
     for part in ['one', 'two']
-    if test.get(part)
+    if part in test
 ])
 def test_days(
     year: str,
