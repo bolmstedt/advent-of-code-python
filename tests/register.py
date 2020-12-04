@@ -198,5 +198,23 @@ TESTS = {
                 'two': 3847183340,
             },
         ],
+        '04': [
+            {
+                'data': [f'{EXAMPLE}_1'],
+                'one': 2,
+            },
+            {
+                'data': [f'{EXAMPLE}_2'],
+                'two': 0,
+            },
+            {
+                'data': [f'{EXAMPLE}_3'],
+                'two': 4,
+            },
+            {
+                'data': [INPUT],
+                'one': 254,
+            },
+        ],
     },
 }
