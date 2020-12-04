@@ -8,7 +8,7 @@ LIGHTS_PER_ROW = 1000
 ROWS = 1000
 OPERATION = re.compile(r'(.*) (\d+,\d+).*?(\d+,\d+)')
 
-SliceType = List[Tuple[int, int]]
+SliceType = List[range]
 
 
 class Solver(BaseSolver):
@@ -57,13 +57,13 @@ class Solver(BaseSolver):
     ) -> None:
         if operation == 'toggle':
             for span in slices:
-                for pos in range(span[0], span[1]):
+                for pos in span:
                     grid[pos] = not grid[pos]
         else:
             value = [operation == 'turn on']
 
             for span in slices:
-                grid[span[0]:span[1]] = value * (span[1] - span[0])
+                grid[span.start:span.stop] = value * (span.stop - span.start)
 
     @staticmethod
     def _solve_two(
@@ -73,7 +73,7 @@ class Solver(BaseSolver):
     ) -> None:
         if operation == 'turn off':
             for span in slices:
-                for pos in range(span[0], span[1]):
+                for pos in span:
                     grid[pos] = max(0, grid[pos] - 1)
         else:
             if operation == 'turn on':
@@ -82,7 +82,7 @@ class Solver(BaseSolver):
                 value = 2
 
             for span in slices:
-                for pos in range(span[0], span[1]):
+                for pos in span:
                     grid[pos] += value
 
     @staticmethod
@@ -98,6 +98,6 @@ class Solver(BaseSolver):
         upper = list(map(int, match.group(2).split(',')))
         lower = list(map(int, match.group(3).split(',')))
         rows = range(upper[1] * ROWS, lower[1] * ROWS + 1, ROWS)
-        slices = [(upper[0] + row, lower[0] + row + 1) for row in rows]
+        slices = [range(upper[0] + row, lower[0] + row + 1) for row in rows]
 
         return operation, slices
