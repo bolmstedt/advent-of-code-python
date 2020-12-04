@@ -51,13 +51,12 @@ class Solver(BaseSolver):
         return sum(
             self._valid_fields(passport)
             for passport in self._parse_input(data)
-            if all(r in passport for r in REQUIRED)
         )
 
     @staticmethod
     def _valid_fields(passport: PassportType) -> bool:
         for field, validator in REQUIRED.items():
-            if not validator(passport.get(field)):
+            if field not in passport or not validator(passport.get(field)):
                 return False
 
         return True
