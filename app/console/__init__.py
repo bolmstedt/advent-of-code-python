@@ -43,6 +43,11 @@ def solve() -> None:
 
     solution = args[0]
 
+    if len(args) > 2 and args[1] == '--loops':
+        loops = int(args[2])
+    else:
+        loops = 1
+
     solvers = utils.load_solvers()
 
     for year, days in solvers.items():
@@ -65,12 +70,24 @@ def solve() -> None:
                 data = handle.read().strip()
 
             start = time.perf_counter()
-            part_one = solver.part_one(data)
-            part_one_time = round((time.perf_counter() - start) * 1000, 2)
+
+            for _ in range(loops):
+                part_one = solver.part_one(data)
+
+            part_one_time = round(
+                (time.perf_counter() - start) / loops * 1000,
+                2,
+            )
 
             start = time.perf_counter()
-            part_two = solver.part_two(data)
-            part_two_time = round((time.perf_counter() - start) * 1000, 2)
+
+            for _ in range(loops):
+                part_two = solver.part_two(data)
+
+            part_two_time = round(
+                (time.perf_counter() - start) / loops * 1000,
+                2,
+            )
 
             if not part_one:
                 part_one = 'Not done'
