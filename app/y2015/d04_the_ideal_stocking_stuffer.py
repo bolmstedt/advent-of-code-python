@@ -1,4 +1,5 @@
 """Solution for day 4, 2015."""
+import itertools
 from typing import Union
 
 from _md5 import md5
@@ -15,24 +16,20 @@ class Solver(BaseSolver):
 
     def part_one(self, data: str) -> Union[int, str]:
         """Solve part one."""
-        return self._solve(data, 5)
+        target = bytearray([0, 0, 16])
+
+        for index in itertools.count():
+            if md5(f'{data}{index}'.encode('ascii')).digest()[0:3] < target:
+                return index
+
+        return 0
 
     def part_two(self, data: str) -> Union[int, str]:
         """Solve part two."""
-        return self._solve(data, 6)
+        target = bytearray([0, 0, 0])
 
-    @classmethod
-    def _solve(cls, data: str, zeroes: int) -> int:
-        target = ''.zfill(zeroes)
-        index = 0
-
-        while True:
-
-            if cls._md5_stars_with(f'{data}{index}', target):
+        for index in itertools.count():
+            if md5(f'{data}{index}'.encode()).digest().startswith(target):
                 return index
 
-            index += 1
-
-    @staticmethod
-    def _md5_stars_with(data: str, target: str) -> bool:
-        return bool(md5(data.encode()).hexdigest().startswith(target))
+        return 0

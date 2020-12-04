@@ -11,19 +11,21 @@ SOLVERS = utils.load_solvers()
 INPUT_PATH = 'input/{solver.year}/{solver.day}/{data}.txt'
 
 
-@pytest.mark.parametrize('year,day,data,one,two', [
-    [year, day, data, test.get('one'), test.get('two')]
+@pytest.mark.parametrize('year,day,part,data,expected', [
+    [year, day, part, data, test.get(part)]
     for year, days in register.TESTS.items()
     for day, tests in days.items()
     for test in tests
     for data in test['data']
+    for part in ['one', 'two']
+    if test.get(part)
 ])
 def test_days(
     year: str,
     day: str,
+    part: str,
     data: str,
-    one: Union[int, str, None],
-    two: Union[int, str, None],
+    expected: Union[int, str],
     full: bool,
     solution: str,
 ) -> None:
@@ -45,19 +47,16 @@ def test_days(
 
         return
 
-    if one is None and two is None:
+    if expected is None:
         pytest.skip('No expected results')
 
         return
 
-    if data in [register.EXAMPLE, register.INPUT]:
+    if data == register.INPUT or data.startswith(register.EXAMPLE):
         with open(
             f'input/{solver.year}/{solver.day}/{data}.txt', 'r',
         ) as handle:
             data = handle.read().strip()
 
-    if one is not None:
-        assert solver.part_one(data) == one
-
-    if two is not None:
-        assert solver.part_two(data) == two
+    method = getattr(solver, f'part_{part}')
+    assert method(data) == expected

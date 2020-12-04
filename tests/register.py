@@ -9,8 +9,8 @@ class TestCase(TypedDict, total=False):
     """Typed dict for test cases."""
 
     data: List[str]
-    one: Union[int, str, None]
-    two: Union[int, str, None]
+    one: Union[int, str]
+    two: Union[int, str]
 
 
 TESTS: Dict[str, Dict[str, List[TestCase]]]
@@ -129,6 +129,21 @@ TESTS = {
                 'data': [INPUT],
                 'one': 236,
                 'two': 51,
+            },
+        ],
+        '06': [
+            {
+                'data': [f'{EXAMPLE}_1'],
+                'one': 997997,
+            },
+            {
+                'data': [f'{EXAMPLE}_2'],
+                'two': 2000003,
+            },
+            {
+                'data': [INPUT],
+                'one': 377891,
+                'two': 14110788,
             },
         ],
     },
