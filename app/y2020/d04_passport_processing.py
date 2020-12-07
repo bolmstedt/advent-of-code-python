@@ -11,16 +11,6 @@ NINE_DIGITS = re.compile(r'^[0-9]{9}$')
 PassportType = Dict[str, str]
 
 
-def _validate_height(value: str) -> bool:
-    """Validate the height."""
-    if value.endswith('cm'):
-        return 150 <= int(value[:-2]) <= 193
-    elif value.endswith('in'):
-        return 59 <= int(value[:-2]) <= 76
-
-    return False
-
-
 REQUIRED = {
     'byr': lambda v: 1920 <= int(v) <= 2002,
     'iyr': lambda v: 2010 <= int(v) <= 2020,
@@ -28,7 +18,10 @@ REQUIRED = {
     'ecl': lambda v: v in EYE_COLORS,
     'hcl': lambda v: HEX_VALUE.search(v) is not None,
     'pid': lambda v: NINE_DIGITS.search(v) is not None,
-    'hgt': _validate_height,
+    'hgt': lambda v: (
+        (v.endswith('cm') and 150 <= int(v[:-2]) <= 193) or
+        (v.endswith('in') and 59 <= int(v[:-2]) <= 76)
+    ),
 }
 
 
@@ -64,15 +57,15 @@ class Solver(BaseSolver):
     @staticmethod
     def _parse_input(data: str) -> List[PassportType]:
         passports = []
-        raw_passports = data.split('\n\n')
 
-        for passport in raw_passports:
+        for passport in data.split('\n\n'):
             matches = FIELD.findall(passport)
 
             if not matches:
                 continue
 
-            fields = [group.split(':') for group in matches]
-            passports.append({k: v for k, v in fields})
+            passports.append(
+                {k: v for k, v in [group.split(':') for group in matches]},
+            )
 
         return passports

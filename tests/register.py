@@ -217,5 +217,65 @@ TESTS = {
                 'two': 184,
             },
         ],
+        '05': [
+            {
+                'data': ['FBFBBFFRLR'],
+                'one': 357,
+            },
+            {
+                'data': ['BFFFBBFRRR'],
+                'one': 567,
+            },
+            {
+                'data': ['FFFBBBFRRR'],
+                'one': 119,
+            },
+            {
+                'data': ['BBFFBBFRLL'],
+                'one': 820,
+            },
+            {
+                'data': [EXAMPLE],
+                'one': 820,
+            },
+            {
+                'data': [INPUT],
+                'one': 880,
+                'two': 731,
+            },
+        ],
+        '06': [
+            {
+                'data': [f'{EXAMPLE}_1'],
+                'one': 6,
+                'two': 3,
+            },
+            {
+                'data': [f'{EXAMPLE}_2'],
+                'one': 11,
+                'two': 6,
+            },
+            {
+                'data': [INPUT],
+                'one': 6416,
+                'two': 3050,
+            },
+        ],
+        '07': [
+            {
+                'data': [f'{EXAMPLE}_1'],
+                'one': 4,
+                'two': 32,
+            },
+            {
+                'data': [f'{EXAMPLE}_2'],
+                'one': 0,
+                'two': 126,
+            },
+            {
+                'data': [INPUT],
+                'one': 337,
+            },
+        ],
     },
 }
