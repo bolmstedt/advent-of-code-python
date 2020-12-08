@@ -1,13 +1,18 @@
 """Solution for day 8, 2020."""
 import re
-from typing import List, Tuple, Union
+from typing import List, Set, Tuple, Union
 
 from app.base_solver import BaseSolver
 
 INSTRUCTIONS = re.compile(r'^(\w{3}) ([+-]\d+)$', flags=re.MULTILINE)
-NOOP = 'nop'
-JUMP = 'jmp'
-ACC = 'acc'
+NOOP = 0
+JUMP = 1
+ACC = 2
+OPS = {
+    'nop': NOOP,
+    'jmp': JUMP,
+    'acc': ACC,
+}
 SWITCH = {NOOP: JUMP, JUMP: NOOP}
 
 
@@ -26,11 +31,10 @@ class Solver(BaseSolver):
         """Solve part two."""
         instructions = self._parse_input(data)
 
-        for index, instruction in reversed(list(enumerate(instructions))):
-            if instruction[0] == ACC:
-                continue
+        _, _, possible_indexes = self._solve(instructions, give_indexes=True)
 
-            solution, finalized = self._solve(instructions, index)
+        for index in possible_indexes:
+            solution, finalized, _ = self._solve(instructions, switch_at=index)
 
             if finalized:
                 return solution
@@ -39,20 +43,31 @@ class Solver(BaseSolver):
 
     @staticmethod
     def _solve(
-        instructions: List[Tuple[str, int]],
+        instructions: List[Tuple[int, int]],
         switch_at: int = None,
-    ) -> Tuple[int, bool]:
+        give_indexes: bool = False,
+    ) -> Tuple[int, bool, Set[int]]:
         acc = 0
         index = 0
         visited = set()
+        possible_indexes: Set[int] = set()
         length = len(instructions)
 
         while index != length:
             if index in visited:
-                return acc, False
+                return acc, False, possible_indexes
 
             instruction, modifier = instructions[index]
             visited.add(index)
+
+            if (
+                give_indexes and instruction != ACC and
+                (
+                    instruction == NOOP or
+                    (instruction == JUMP and modifier < 1)
+                )
+            ):
+                possible_indexes.add(index)
 
             if switch_at == index:
                 instruction = SWITCH[instruction]
@@ -66,10 +81,11 @@ class Solver(BaseSolver):
 
             index += 1
 
-        return acc, True
+        return acc, True, set()
 
     @staticmethod
-    def _parse_input(data: str) -> List[Tuple[str, int]]:
+    def _parse_input(data: str) -> List[Tuple[int, int]]:
         return [
-            (match[0], int(match[1])) for match in INSTRUCTIONS.findall(data)
+            (OPS[match[0]], int(match[1]))
+            for match in INSTRUCTIONS.findall(data)
         ]
