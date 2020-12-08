@@ -30,7 +30,6 @@ class Solver(BaseSolver):
     def part_two(self, data: str) -> Union[int, str]:
         """Solve part two."""
         instructions = self._parse_input(data)
-
         _, _, possible_indexes = self._solve(instructions, give_indexes=True)
 
         for index in possible_indexes:
