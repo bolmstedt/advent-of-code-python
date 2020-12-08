@@ -37,26 +37,26 @@ class Solver(BaseSolver):
         with open('input/2015/21/shop.txt', 'r') as handle:
             shop = handle.read().split('\n\n')
 
-        self._weapons = [
+        weapons = [
             Item(cost=int(item[0]), damage=int(item[1]), armor=int(item[2]))
             for item in ITEM.findall(shop[0])
         ]
 
-        self._armor = [
+        armors = [
             Item(cost=int(item[0]), damage=int(item[1]), armor=int(item[2]))
             for item in ITEM.findall(shop[1])
         ] + [Item(cost=0, damage=0, armor=0)]
 
-        self._rings = [
+        rings = [
             Item(cost=int(item[0]), damage=int(item[1]), armor=int(item[2]))
             for item in ITEM.findall(shop[2])
         ] + [Item(cost=0, damage=0, armor=0), Item(cost=0, damage=0, armor=0)]
 
         self._shop = [
-            [weapon, armor, rings[0], rings[1]]
-            for weapon in self._weapons
-            for armor in self._armor
-            for rings in itertools.combinations(self._rings, 2)
+            [weapon, armor, ring[0], ring[1]]
+            for weapon in weapons
+            for armor in armors
+            for ring in itertools.combinations(rings, 2)
         ]
 
     def part_one(self, data: str) -> Union[int, str]:
