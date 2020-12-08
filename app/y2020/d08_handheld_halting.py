@@ -47,12 +47,9 @@ class Solver(BaseSolver):
         visited = set()
         length = len(instructions)
 
-        while True:
+        while index not in visited:
             if index == length:
                 return acc, True
-
-            if index in visited:
-                return acc, False
 
             instruction, modifier = instructions[index]
             visited.add(index)
@@ -68,6 +65,8 @@ class Solver(BaseSolver):
                 acc += modifier
 
             index += 1
+
+        return acc, False
 
     @staticmethod
     def _parse_input(data: str) -> List[Tuple[str, int]]:
