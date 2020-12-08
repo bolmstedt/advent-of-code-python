@@ -269,12 +269,12 @@ TESTS = {
             },
             {
                 'data': [f'{EXAMPLE}_2'],
-                'one': 0,
                 'two': 126,
             },
             {
                 'data': [INPUT],
                 'one': 337,
+                'two': 50100,
             },
         ],
     },
