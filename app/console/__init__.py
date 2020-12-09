@@ -79,6 +79,11 @@ def solve() -> None:
                 2,
             )
 
+            if not part_one:
+                part_one = 'Not done'
+
+            _cprint(f'\tPart One: {part_one} ({part_one_time}ms)', OKGREEN)
+
             start = time.perf_counter()
 
             for _ in range(loops):
@@ -89,13 +94,9 @@ def solve() -> None:
                 2,
             )
 
-            if not part_one:
-                part_one = 'Not done'
-
             if not part_two:
                 part_two = 'Not done'
 
-            _cprint(f'\tPart One: {part_one} ({part_one_time}ms)', OKGREEN)
             _cprint(f'\tPart Two: {part_two} ({part_two_time}ms)', OKGREEN)
 
 
