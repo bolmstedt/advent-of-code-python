@@ -53,10 +53,7 @@ def test_days(
         return
 
     if data == register.INPUT or data.startswith(register.EXAMPLE):
-        with open(
-            f'input/{solver.year}/{solver.day}/{data}.txt', 'r',
-        ) as handle:
-            data = handle.read().strip()
+        data = utils.load_input(solver, data)
 
     method = getattr(solver, f'part_{part}')
     assert method(data) == expected

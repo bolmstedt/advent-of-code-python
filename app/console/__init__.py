@@ -60,14 +60,11 @@ def solve() -> None:
 
             _cprint(solver.full_name, HEADER)
 
-            data_file = Path(f'input/{year}/{day}/input.txt')
-
-            if not data_file.is_file():
+            try:
+                data = utils.load_input(solver, 'input')
+            except FileNotFoundError:
                 _cprint('\tSkipped', WARNING)
                 continue
-
-            with open(data_file, 'r') as handle:
-                data = handle.read().strip()
 
             start = time.perf_counter()
 
