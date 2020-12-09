@@ -1,10 +1,8 @@
 """Solution for day 8, 2020."""
-import re
 from typing import List, Set, Tuple, Union
 
 from app.base_solver import BaseSolver
 
-INSTRUCTIONS = re.compile(r'^(\w{3}) ([+-]\d+)$', flags=re.MULTILINE)
 NOOP = 0
 JUMP = 1
 ACC = 2
@@ -85,6 +83,6 @@ class Solver(BaseSolver):
     @staticmethod
     def _parse_input(data: str) -> List[Tuple[int, int]]:
         return [
-            (OPS[match[0]], int(match[1]))
-            for match in INSTRUCTIONS.findall(data)
+            (OPS[row[:3]], int(row[4:]))
+            for row in data.splitlines()
         ]
