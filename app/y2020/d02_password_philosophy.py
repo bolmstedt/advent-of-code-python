@@ -1,10 +1,7 @@
 """Solution for day 2, 2020."""
-import re
-from typing import Union
+from typing import Callable, Union
 
 from app.base_solver import BaseSolver
-
-PASSWORD = re.compile(r'\W+')
 
 
 class Solver(BaseSolver):
@@ -16,36 +13,50 @@ class Solver(BaseSolver):
 
     def part_one(self, data: str) -> Union[int, str]:
         """Solve part one."""
-        rows = data.splitlines()
-
-        valid_passwords = 0
-
-        for row in rows:
-            lower_limit, upper_limit, letter, password = PASSWORD.split(row)
-
-            if int(lower_limit) <= password.count(letter) <= int(upper_limit):
-                valid_passwords += 1
-
-        return valid_passwords
+        return self._solve(data, self._letter_appears_times)
 
     def part_two(self, data: str) -> Union[int, str]:
         """Solve part two."""
-        rows = data.splitlines()
+        return self._solve(data, self._letter_appears_only_once_at)
 
+    @staticmethod
+    def _solve(
+        data: str,
+        validation: Callable[[int, int, str, str], bool],
+    ) -> int:
         valid_passwords = 0
 
-        for row in rows:
-            first, second, letter, password = PASSWORD.split(row)
-            first_position = int(first) - 1
-            second_position = int(second) - 1
+        for row in data.splitlines():
+            parts = row.split(' ', 1)
+            rules = parts[0].split('-')
 
-            if (
-                password[first_position] == letter and
-                password[second_position] != letter
-            ) or (
-                password[first_position] != letter and
-                password[second_position] == letter
+            if validation(
+                int(rules[0]),
+                int(rules[1]),
+                parts[1][:1],
+                parts[1][3:],
             ):
                 valid_passwords += 1
 
         return valid_passwords
+
+    @staticmethod
+    def _letter_appears_times(
+        lower: int,
+        upper: int,
+        letter: str,
+        password: str,
+    ) -> bool:
+        return lower <= password.count(letter) <= upper
+
+    @staticmethod
+    def _letter_appears_only_once_at(
+        first: int,
+        second: int,
+        letter: str,
+        password: str,
+    ) -> bool:
+        return (
+            password[first - 1] == letter or
+            password[second - 1] == letter
+        ) and password[first - 1] != password[second - 1]
