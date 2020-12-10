@@ -1,7 +1,6 @@
 """Solution for day 9, 2020."""
 import collections
-import itertools
-from typing import List, Union
+from typing import Deque, List, Union
 
 from app.base_solver import BaseSolver
 
@@ -15,11 +14,12 @@ class Solver(BaseSolver):
 
     def part_one(self, data: str) -> Union[int, str]:
         """Solve part one."""
-        return self._solve_part_one(self._parse_input(data), 25)
+        return self._solve_part_one(self._parse_int_lines(data), 25)
 
     def part_two(self, data: str) -> Union[int, str]:
         """Solve part two."""
-        values = self._parse_input(data)
+        values = self._parse_int_lines(data)
+
         return self._solve_part_two(values, self._solve_part_one(values, 25))
 
     @staticmethod
@@ -27,36 +27,34 @@ class Solver(BaseSolver):
         preamble = collections.deque(values[:preamble_length], preamble_length)
 
         for value in values[preamble_length:]:
-            missing = True
+            min_value = value - min(preamble)
 
-            for combination in itertools.combinations(preamble, 2):
-                if sum(combination) == value:
-                    missing = False
+            for sub_value in preamble:
+                if sub_value <= min_value:
+                    preamble.append(value)
                     break
-
-            if missing:
+            else:
                 return value
-
-            preamble.append(value)
 
         return 0
 
     @staticmethod
     def _solve_part_two(values: List[int], target: int) -> int:
-        length = len(values)
+        contiguous: Deque[int] = collections.deque()
+        total = 0
+        half_target = target / 2
 
-        for start in range(length):
-            for stop in range(len(values[start:])):
-                contiguous = values[start:stop]
-                total = sum(contiguous)
+        for value in values:
+            if value >= half_target:
+                continue
 
-                if total > target:
-                    break
-                elif total == target:
-                    return min(contiguous) + max(contiguous)
+            contiguous.append(value)
+            total += value
+
+            while total > target:
+                total -= contiguous.popleft()
+
+            if total == target:
+                return min(contiguous) + max(contiguous)
 
         return 0
-
-    @staticmethod
-    def _parse_input(data: str) -> List[int]:
-        return [int(value) for value in data.splitlines()]

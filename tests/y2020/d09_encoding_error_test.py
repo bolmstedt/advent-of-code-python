@@ -8,11 +8,11 @@ def test_part_one_example() -> None:
     """Test solver for part one."""
     solver = Solver()
     data = utils.load_input(solver, EXAMPLE)
-    assert solver._solve_part_one(solver._parse_input(data), 5) == 127
+    assert solver._solve_part_one(solver._parse_int_lines(data), 5) == 127
 
 
 def test_part_two_example() -> None:
     """Test solver for part two."""
     solver = Solver()
     data = utils.load_input(solver, EXAMPLE)
-    assert solver._solve_part_two(solver._parse_input(data), 127) == 62
+    assert solver._solve_part_two(solver._parse_int_lines(data), 127) == 62
