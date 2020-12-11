@@ -303,5 +303,38 @@ TESTS = {
                 'two': 4023754,
             },
         ],
+        '10': [
+            {
+                'data': [f'{EXAMPLE}_1'],
+                'one': 35,
+                'two': 8,
+            },
+            {
+                'data': [f'{EXAMPLE}_2'],
+                'one': 220,
+                'two': 19208,
+            },
+            {
+                'data': [f'{EXAMPLE}_3'],
+                'two': 7,
+            },
+            {
+                'data': [f'{EXAMPLE}_4'],
+                'two': 13,
+            },
+            {
+                'data': [f'{EXAMPLE}_5'],
+                'two': 2,
+            },
+            {
+                'data': [f'{EXAMPLE}_6'],
+                'two': 4,
+            },
+            {
+                'data': [INPUT],
+                'one': 1885,
+                'two': 2024782584832,
+            },
+        ],
     },
 }
